@@ -6,6 +6,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.SampleDTO;
 import org.zerock.domain.SampleDTOList;
 import org.zerock.domain.TodoDTO;
@@ -43,9 +44,8 @@ public class SampleController {
     }
 
     @GetMapping("/ex01")
-    public String ex01(SampleDTO dto){
+    public String ex01(SampleDTO dto, RedirectAttributes attributes){
         log.info("" + dto);
-
         return "ex01";
     }
 
@@ -79,5 +79,12 @@ public class SampleController {
     public String ex03(TodoDTO todo){
         log.info("todo : " + todo);
         return "ex03";
+    }
+
+    @GetMapping("/ex04")
+    public String ex04(SampleDTO dto, @ModelAttribute("page") int page){
+        log.info("dto : " + dto);
+        log.info("page : " + page);
+        return "/sample/ex04";
     }
 }
