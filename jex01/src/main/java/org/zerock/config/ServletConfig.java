@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.JstlView;
 import java.io.IOException;
 
 @Configuration
-@ComponentScan(basePackages = "org.zerock.controller")
+@ComponentScan(basePackages = {"org.zerock.controller", "org.zerock.exception"})
 @EnableWebMvc
 public class ServletConfig implements WebMvcConfigurer {
     @Override
