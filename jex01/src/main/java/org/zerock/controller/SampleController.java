@@ -31,10 +31,11 @@ public class SampleController {
 
 
 
-    @RequestMapping("")
+    @RequestMapping("/")
     public void basic(){
         log.info("basic ..............");
     }
+
     @RequestMapping(value = "/basic", method = {RequestMethod.GET, RequestMethod.POST})
     public void basicGet(){
         log.info("basic get.................");
