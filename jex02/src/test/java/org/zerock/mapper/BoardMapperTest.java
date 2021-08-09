@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.zerock.config.RootConfig;
+import org.zerock.domain.BoardVO;
 
 import static org.junit.Assert.*;
 
@@ -21,5 +22,51 @@ public class BoardMapperTest {
     @Test
     public void testGetList(){
         mapper.getList().forEach(log::info);
+    }
+
+    @Test
+    public void testInsert() {
+        BoardVO board = new BoardVO();
+        board.setTitle("새로 작성하는 글");
+        board.setContent("새로 작성하는 내용");
+        board.setWriter("Newbie");
+
+        mapper.insert(board);
+
+        log.info(board);
+    }
+
+    @Test
+    public void testInsertSelectKey() {
+        BoardVO board = new BoardVO();
+        board.setTitle("새로 작성하는 글");
+        board.setContent("새로 작성하는 내용");
+        board.setWriter("Newbie");
+
+        mapper.insertSelectKey(board);
+
+        log.info(board);
+    }
+
+    @Test
+    public void testReadOne(){
+        log.info(mapper.read(1L));
+    }
+
+    @Test
+    public void testDeleteOne(){
+        log.info("Deleted : " + mapper.delete(1L));
+    }
+
+    @Test
+    public void testUpdateOne(){
+        BoardVO boardVO = new BoardVO();
+        boardVO.setBno(4L);
+        boardVO.setContent("바뀐 내용");
+        boardVO.setWriter("바뀐 작가");
+        boardVO.setTitle("바뀐 책");
+
+        log.info("Changed : " + mapper.update(boardVO));
+        mapper.getList();
     }
 }
