@@ -61,4 +61,5 @@ public class BoardServiceTest {
         boardVO.setTitle("수정 제목");
         log.info("Modify result : " + service.modify(boardVO));
     }
+
 }
