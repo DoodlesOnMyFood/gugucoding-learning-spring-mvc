@@ -56,6 +56,17 @@ public class BoardControllerTest {
     }
 
     @Test
+    public void testRegister() throws Exception {
+        log.info(
+                mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
+                        .param("title", "테스트 제목")
+                        .param("content", "테스트 내용")
+                        .param("writer", "테스트 작가"))
+                        .andReturn().getFlashMap().get("result")
+        );
+    }
+
+    @Test
     public void testModify() throws Exception {
         String resultPage = mockMvc.perform(
                 MockMvcRequestBuilders
