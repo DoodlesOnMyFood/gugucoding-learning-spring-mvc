@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.zerock.config.RootConfig;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 
 import static org.junit.Assert.*;
 
@@ -44,7 +45,7 @@ public class BoardServiceTest {
 
     @Test
     public void testGetList() {
-        service.getList().forEach(log::info);
+        service.getList(new Criteria()).forEach(log::info);
     }
 
     @Test

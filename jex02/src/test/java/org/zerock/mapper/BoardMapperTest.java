@@ -9,6 +9,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.zerock.config.RootConfig;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -68,5 +71,13 @@ public class BoardMapperTest {
 
         log.info("Changed : " + mapper.update(boardVO));
         mapper.getList();
+    }
+
+    @Test
+    public void testPaging(){
+        Criteria criteria = new Criteria();
+        List<BoardVO> boards = mapper.getListWithPaging(criteria);
+
+        boards.forEach(log::info);
     }
 }

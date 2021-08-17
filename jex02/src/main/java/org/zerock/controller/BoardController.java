@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 import org.zerock.service.BoardService;
 
 @Controller
@@ -20,9 +21,9 @@ public class BoardController {
     private BoardService service;
 
     @GetMapping("list")
-    public void list(Model model){
+    public void list(Criteria criteria,Model model){
         log.info("list");
-        model.addAttribute("list", service.getList());
+        model.addAttribute("list", service.getList(criteria));
     }
 
     @GetMapping({"get", "modify"})
