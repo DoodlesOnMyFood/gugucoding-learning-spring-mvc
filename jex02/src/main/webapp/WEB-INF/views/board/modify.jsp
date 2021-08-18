@@ -22,6 +22,8 @@
             <div class="panel-heading">Board Read Page</div>
             <div class="panel-body">
                 <form role="form" action="/board/modify" method="post">
+                    <input type="hidden" name="pageNum" value="<c:out value='${criteria.pageNum}'/>">
+                    <input type="hidden" name="amount" value="<c:out value='${criteria.amount}'/>">
                     <div class="form-group">
                         <label>Bno</label>
                         <input class="form-control" name="bno" value='<c:out value="${board.bno}"/>' readonly="readonly">
@@ -74,6 +76,7 @@
 <script>
     $(document).ready(function (){
         var formObj = $("form")
+        console.log(formObj)
         $("button").on("click", function (e){
             e.preventDefault()
 
@@ -86,7 +89,7 @@
                 console.log(formObj)
             }else if (operation === "list"){
                 formObj.attr("action", "/board/list").attr("method", "get")
-                formObj.removeData()
+                $(".form-group").remove()
             }
             formObj.submit();
         })

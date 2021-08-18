@@ -45,4 +45,7 @@
             where rn > (#{pageNum} - 1)* #{amount}
 ]]>
     </select>
+    <select id="getTotalCount" resultType="java.lang.Integer">
+        select count(*) from tbl_board where bno > 0
+    </select>
 </mapper>
