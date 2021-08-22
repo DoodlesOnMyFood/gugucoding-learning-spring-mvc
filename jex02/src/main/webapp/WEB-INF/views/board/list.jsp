@@ -44,6 +44,25 @@
                         </tr>
                     </c:forEach>
                 </table>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form id="searchForm" action="/board/list" method="get">
+                            <select name="type">
+                                <option value=""${pageMaker.criteria.type == null ? 'selected' : ''}>--</option>
+                                <option value="T" ${pageMaker.criteria.type eq 'T' ? 'selected' : ''}>제목</option>
+                                <option value="C" ${pageMaker.criteria.type eq 'C' ? 'selected' : ''}>내용</option>
+                                <option value="W" ${pageMaker.criteria.type eq 'W' ? 'selected' : ''}>작성자</option>
+                                <option value="TC" ${pageMaker.criteria.type eq 'TC' ? 'selected' : ''}>제목 or 내용</option>
+                                <option value="TW" ${pageMaker.criteria.type eq 'TW' ? 'selected' : ''}>제목 or 작성자</option>
+                                <option value="TCW" ${pageMaker.criteria.type eq 'TWC' ? 'selected' : ''}>제목 or 작성자 or 내용</option>
+                            </select>
+                            <input type="text" name="keyword" value="${pageMaker.criteria.keyword}"/>
+                            <input type="hidden" name="pageNum" value="${pageMaker.criteria.pageNum}">
+                            <input type="hidden" name="amount" value="${pageMaker.criteria.amount}">
+                            <button class="btn btn-default">Search</button>
+                        </form>
+                    </div>
+                </div>
                 <div class="pull-right">
                     <ul class="pagination">
                         <c:if test="${pageMaker.prev}">
@@ -60,6 +79,8 @@
                     <form id="actionForm" action="/board/list" method="get">
                         <input type="hidden" name="pageNum" value='${pageMaker.criteria.pageNum}'>
                         <input type="hidden" name="amount" value='${pageMaker.criteria.amount}'>
+                        <input type="hidden" name="type" value='${pageMaker.criteria.type}'>
+                        <input type="hidden" name="keyword" value='${pageMaker.criteria.keyword}'>
                     </form>
                 </div>
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -112,16 +133,36 @@
         $(".paginate_button a").on("click", function (e){
             e.preventDefault()
             console.log("click")
+            actionForm.attr("action", "/board/list")
+            $(".bno_val").remove()
             actionForm.find("input[name='pageNum']").val($(this).attr("href"))
             actionForm.submit()
         })
 
         $(".move").on("click", function(e){
             e.preventDefault()
-            actionForm.append("<input type='hidden' name='bno' value='" + $(this).attr("href") + "'>")
+            actionForm.append("<input class='bno_val' type='hidden' name='bno' value='" + $(this).attr("href") + "'>")
             actionForm.attr("action", "/board/get")
             actionForm.submit();
         })
+
+        var searchForm = $("#searchForm")
+
+        $("#searchForm button").on("click", function (e){
+            if(!searchForm.find("option:selected").val()){
+                alert("검색 종류 선택하세요")
+                return false
+            }
+            if(!searchForm.find("input[name='keyword']").val()){
+                alert("키워드 입력하세요")
+                return false
+            }
+            searchForm.find("input[name='pageNum']").val("1")
+            e.preventDefault()
+            searchForm.submit()
+        })
+
+
     })
 </script>
 

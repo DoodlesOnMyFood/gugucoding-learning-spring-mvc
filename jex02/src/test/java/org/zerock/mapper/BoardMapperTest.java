@@ -28,6 +28,12 @@ public class BoardMapperTest {
     }
 
     @Test
+    public void testGetTotal() {
+        Criteria cri = new Criteria();
+        log.info(mapper.getTotalCount(cri));
+    }
+
+    @Test
     public void testInsert() {
         BoardVO board = new BoardVO();
         board.setTitle("새로 작성하는 글");
@@ -79,5 +85,15 @@ public class BoardMapperTest {
         List<BoardVO> boards = mapper.getListWithPaging(criteria);
 
         boards.forEach(log::info);
+    }
+
+    @Test
+    public void testSearch(){
+        Criteria cri = new Criteria();
+        cri.setKeyword("새로");
+        cri.setType("TC");
+        List<BoardVO> list = mapper.getListWithPaging(cri);
+
+        list.forEach(log::info);
     }
 }
