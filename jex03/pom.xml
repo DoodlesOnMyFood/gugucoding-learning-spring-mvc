@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.zerock</groupId>
     <artifactId>controller</artifactId>
-    <name>jex02</name>
+    <name>jex03</name>
     <packaging>war</packaging>
     <version>1.0.0-BUILD-SNAPSHOT</version>
     <properties>
@@ -176,6 +176,7 @@
             <version>${org.springframework-version}</version>
             <scope>test</scope>
         </dependency>
+
 
     </dependencies>
     <build>

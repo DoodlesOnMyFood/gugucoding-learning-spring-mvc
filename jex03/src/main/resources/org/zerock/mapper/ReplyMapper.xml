@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.ReplyMapper">
+    <insert id="insert">
+        insert into TBL_REPLY (rno, BNO, REPLY, REPLYER)
+        values (SEQ_REPLY.nextval, #{bno}, #{reply}, #{replyer})
+    </insert>
+    <update id="update">
+        update tbl_reply set reply = #{reply}, updatedate = sysdate where rno = #{rno}
+    </update>
+    <delete id="delete">
+        delete from tbl_reply where rno = #{rno}
+    </delete>
+    <select id="read" resultType="org.zerock.domain.ReplyVO">
+        select * from tbl_reply where #{rno} = rno
+    </select>
+    <select id="getListWithPaging" resultType="org.zerock.domain.ReplyVO">
+        select rno, bno, reply, replyer, replyDate, updateDate
+        from tbl_reply
+        where bno = #{bno}
+        order by rno asc
+    </select>
+</mapper>

@@ -22,6 +22,7 @@ public class BoardController {
     @GetMapping("list")
     public void list(Criteria criteria,Model model){
         log.info("list");
+        System.out.println("??");
         log.info(criteria);
         PageDTO pageDTO = new PageDTO(criteria, service.getTotal(criteria));
         log.info(pageDTO);
