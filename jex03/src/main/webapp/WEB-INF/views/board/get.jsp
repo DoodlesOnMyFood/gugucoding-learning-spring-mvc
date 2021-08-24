@@ -55,6 +55,184 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="panel-default panel">
+<%--        <div class="panel-heading">--%>
+<%--            <i class="fa fa-comments fa-fw"></i> Reply--%>
+<%--        </div>--%>
+
+        <div class="panel-heading">
+            <i class="fa fa-comments fa-fw"></i> Reply
+            <button id="addReplyBtn" class="btn btn-primary btn-xs pull-right">New Reply</button>
+        </div>
+
+
+        <div class="panel-body">
+            <ul class="chat">
+                <li class="left clearfix" data-rno="12">
+                    <div>
+                        <div class="header">
+                            <strong class="primary-font">user00</strong>
+                            <small class="pull-right text-muted">2018-01-01 13:13</small>
+                        </div>
+                        <p>Good Job!</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">REPLY MODAL</h4>
+            </div>
+            <div lcass="modal-body">
+                <div class="form-group">
+                    <label>Reply</label>
+                    <input class="form-control" name="reply" value="New Reply">
+                </div>
+                <div class="form-group">
+                    <label>Replyer</label>
+                    <input class="form-control" name="replyer" value="replyer">
+                </div>
+                <div class="form-group">
+                    <label>Reply Date</label>
+                    <input class="form-control" name="replyDate" value="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="modalModBtn" type="button" class="btn btn-warning">Modify</button>
+                <button id="modalRemoveBtn" type="button" class="btn btn-danger">Remove</button>
+                <button id="modalRegisterBtn" type="button" class="btn btn-success">Register</button>
+                <button id="modalCloseBtn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="${pageContext.request.contextPath}/resources/js/reply.js"></script>
+<script>
+    $(document).ready(function (){
+        var bnoValue = '<c:out value="${board.bno}"/>'
+        var replyUL = $(".chat")
+
+            showList(1)
+
+            function showList(page){
+                replyService.getList({bno:bnoValue, page : page || 1}, function (list){
+                    var str=""
+                    console.log("going?")
+                    if(list == null || list.length == 0){
+                        replyUL.html("")
+                        return
+                    }
+                    console.log("going??")
+                    for(var i = 0, len = list.length || 0; i < len; i++){
+                        str += "<li class='left clearfix' data-rno='" + list[i].rno + "'>"
+                        str += "<div><div class='header'> <strong class='primary-font'>"+ list[i].replyer + "</strong>"
+                        str += "<small class='pull-right text-muted'>" + replyService.displayTime(list[i].replyDate) + "</small>"
+                        str += "</div><p>" + list[i].reply + "</p></div></li>"
+                    }
+                    replyUL.html(str)
+                })
+            }
+
+        replyUL.on("click", "li", function (e){
+            var rno = $(this).data("rno")
+
+            replyService.get(rno, function (reply){
+                modalInputReply.val(reply.reply)
+                modalInputReplyer.val(reply.replyer)
+                modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly", "readonly")
+
+                modal.find("button[id != 'modalCloseBtn']").hide()
+                modalModBtn.show()
+                modalRemoveBtn.show()
+
+                $(".modal").modal("show")
+            })
+        })
+
+        var modal = $(".modal")
+        var modalInputReply = modal.find("input[name='reply']")
+        var modalInputReplyer = modal.find("input[name='replyer']")
+        var modalInputReplyDate = modal.find("input[name='replyDate']")
+
+        var modalModBtn = $("#modalModBtn")
+        var modalRemoveBtn = $("#modalRemoveBtn")
+        var modalRegisterBtn = $("#modalRegisterBtn")
+
+        $("#addReplyBtn").on("click", function(e){
+            modal.find("input").val("")
+            modalInputReplyDate.closest("div").hide()
+            modal.find("button[id != 'modalCloseBtn']").hide()
+
+            modalRegisterBtn.show()
+
+            $(".modal").modal("show")
+        })
+
+        modalRegisterBtn.on("click", function (e){
+            var reply = {
+                reply : modalInputReply.val(),
+                replyer : modalInputReplyer.val(),
+                bno : bnoValue
+            }
+
+            replyService.add(reply, function (result){
+                alert(result)
+                modal.find("input").val("")
+                modal.modal("hide")
+                showList(1)
+            })
+        })
+    })
+</script>
+<%--<script>--%>
+<%--    console.log("=====================")--%>
+<%--    console.log("JS TEST")--%>
+
+<%--    replyService.add({--%>
+<%--        bno : <c:out value="${board.bno}"/>,--%>
+<%--        reply : "test comment",--%>
+<%--        replyer : "tester"--%>
+<%--        },--%>
+<%--        function (success){--%>
+<%--            alert("result : " + success)--%>
+<%--        }--%>
+<%--    )--%>
+
+<%--    var bnoValue = '<c:out value="${board.bno}"/>'--%>
+<%--    console.log(bnoValue)--%>
+<%--    replyService.getList({bno : bnoValue, page:1}, function (list){--%>
+<%--        for(var i = 0, len = list.length || 0; i < len; i++ ){--%>
+<%--            console.log(list[i])--%>
+<%--        }--%>
+<%--    })--%>
+
+<%--    replyService.remove(23, function (count){--%>
+<%--        console.log(count);--%>
+<%--        if(count === "Success")--%>
+<%--            alert("removed")--%>
+<%--        }, function (err){--%>
+<%--            alert("Error during delete.")--%>
+<%--        }--%>
+<%--    )--%>
+
+<%--    replyService.update({rno : 24, bno : bnoValue, reply : "Update Text Test"},--%>
+<%--        function (success){--%>
+<%--            alert("Successful update")--%>
+<%--        }--%>
+
+<%--    replyService.get(24, console.log)--%>
+
+<%--</script>--%>
 <script>
     $(document).ready(
         function (){
@@ -71,8 +249,6 @@
             })
         }
     )
-
-
 </script>
 
 <%@ include file="../includes/footer.jsp" %>
