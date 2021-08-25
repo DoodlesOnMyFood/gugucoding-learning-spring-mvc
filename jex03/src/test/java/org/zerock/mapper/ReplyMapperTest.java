@@ -67,4 +67,15 @@ public class ReplyMapperTest {
         List<ReplyVO> list = mapper.getListWithPaging(cri, 2492600L);
         list.forEach(log::info);
     }
+
+    @Test
+    public void testList2() {
+        Criteria criteria = new Criteria(2, 10);
+        mapper.getListWithPaging(criteria, 4718692L).forEach(log::info);
+    }
+
+    @Test
+    public void testCount() {
+        log.info(mapper.getCountByBno(4718692L));
+    }
 }

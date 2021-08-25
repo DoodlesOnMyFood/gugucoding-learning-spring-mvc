@@ -1,6 +1,7 @@
 package org.zerock.service;
 
 import org.zerock.domain.Criteria;
+import org.zerock.domain.ReplyPageDto;
 import org.zerock.domain.ReplyVO;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface ReplyService {
     public int modify(ReplyVO vo);
     public int remove(Long rno);
     public List<ReplyVO> getList(Criteria criteria, Long bno);
+    public ReplyPageDto getListPage(Criteria criteria, Long bno);
 }

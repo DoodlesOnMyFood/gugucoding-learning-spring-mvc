@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.Criteria;
+import org.zerock.domain.ReplyPageDto;
 import org.zerock.domain.ReplyVO;
 import org.zerock.mapper.ReplyMapper;
 
@@ -43,5 +44,10 @@ public class ReplyServiceImpl implements ReplyService {
     public List<ReplyVO> getList(Criteria criteria, Long bno) {
         log.info("get reply list of board " + bno);
         return mapper.getListWithPaging(criteria, bno);
+    }
+
+    @Override
+    public ReplyPageDto getListPage(Criteria criteria, Long bno) {
+        return new ReplyPageDto(mapper.getCountByBno(bno), getList(criteria, bno));
     }
 }
