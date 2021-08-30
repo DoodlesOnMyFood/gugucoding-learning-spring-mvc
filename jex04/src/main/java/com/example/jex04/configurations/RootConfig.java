@@ -1,4 +1,4 @@
-package org.zerock.config;
+package com.example.jex04.configurations;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -16,23 +16,22 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan("org.zerock.mapper")
-@ComponentScan(basePackages = {"org.zerock.service"})
-@ComponentScan(basePackages = {"org.zerock.aop"})
+@ComponentScan(basePackages = {"com.example.jex04.service"})
+@ComponentScan(basePackages = {"com.example.jex04.aop"})
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
+@MapperScan
 public class RootConfig {
 
     @Bean
     public DataSource dataSource(){
-        HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setDriverClassName(DriverSpy.class.getName());
-        hikariConfig.setJdbcUrl("jdbc:log4jdbc:oracle:thin:@localhost:1521:XE");
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName(DriverSpy.class.getName());
+        config.setJdbcUrl("jdbc:log4jdbc:oracle:thin:@localhost:1521:XE");
+        config.setPassword("book_ex");
+        config.setUsername("book_ex");
 
-        hikariConfig.setUsername("book_ex");
-        hikariConfig.setPassword("book_ex");
-
-        return new HikariDataSource(hikariConfig);
+        return new HikariDataSource(config);
     }
 
 
@@ -47,4 +46,5 @@ public class RootConfig {
     public DataSourceTransactionManager txManager(){
         return new DataSourceTransactionManager(dataSource());
     }
+
 }
