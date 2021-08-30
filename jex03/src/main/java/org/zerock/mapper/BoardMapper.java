@@ -24,5 +24,6 @@ public interface BoardMapper {
 
     public int getTotalCount(Criteria criteria);
 
+    public void updateReplyCnt(Long bno, int amount);
 
 }
