@@ -3,6 +3,7 @@ package org.zerock.config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import net.sf.log4jdbc.sql.jdbcapi.DriverSpy;
+
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -28,7 +29,6 @@ public class RootConfig {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName(DriverSpy.class.getName());
         hikariConfig.setJdbcUrl("jdbc:log4jdbc:oracle:thin:@localhost:1521:XE");
-
         hikariConfig.setUsername("book_ex");
         hikariConfig.setPassword("book_ex");
 
