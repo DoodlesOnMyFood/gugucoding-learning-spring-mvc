@@ -13,7 +13,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-//@ComponentScan(basePackages = {"org.zerock.controller"})
 public class ServletConfig implements WebMvcConfigurer {
     @Bean
     public MultipartResolver multipartResolver(){

@@ -9,6 +9,29 @@
 <html>
 <head>
     <title>Title</title>
+    <style>
+        .uploadResult{
+            width : 100%;
+            background-color: gray;
+        }
+
+        .uploadResult ul{
+            display:flex;
+            flex-flow:row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .uploadResult ul li{
+            list-style: none;
+            padding: 10px;
+        }
+
+        .uploadResult ul li img{
+            width: 20px;
+        }
+
+    </style>
 </head>
 <body>
 <h1>Upload with AJAX</h1>
@@ -16,16 +39,37 @@
 <div class="uploadDiv">
     <input type="file" name="uploadFile" multiple>
 </div>
+<div class="uploadResult">
+    <ul></ul>
+</div>
 
 <button id="uploadBtn">Upload</button>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
 
+
+
 <script>
     $(document).ready(function(){
 
+        var cloneObj = $(".uploadDiv").click()
         var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$")
         var maxSize = 5242880
+        var uploadResult = $(".uploadResult ul")
+
+        function showUploadedFile(uploadResultArr){
+            var str = ""
+
+            $(uploadResultArr).each(function (i, obj){
+                if(!obj.image){
+                    str += "<li><img src='/resources/img/attach.png'>" + obj.fileName + "</li>"
+                } else{
+                    var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName)
+                    str += "<li><img src='/display?fileName=" + fileCallPath + "'><li>"
+                }
+            })
+            uploadResult.append(str)
+        }
 
         function checkExtension(fileName, fileSize){
             if(fileSize >= maxSize){
@@ -62,6 +106,9 @@
                 type : 'POST',
                 success : function (result){
                     console.log(result)
+                    showUploadedFile(result)
+                    $(".uploadDiv").html(cloneObj.html())
+
                 }
             })
         })
