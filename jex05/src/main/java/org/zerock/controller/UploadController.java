@@ -2,6 +2,8 @@ package org.zerock.controller;
 
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +18,8 @@ import org.zerock.domain.AttachFileDTO;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,7 +41,7 @@ public class UploadController {
     private boolean checkImageType(File file){
         try {
             String contentType = Files.probeContentType(file.toPath());
-
+            log.info("Content type : " + contentType);
             return contentType.startsWith("image");
         } catch (IOException e) {
             e.printStackTrace();
@@ -109,6 +113,7 @@ public class UploadController {
             try {
                 multipartFile.transferTo(saveFile);
                 if (checkImageType(saveFile)){
+                    log.info("Is image!");
                     attachFileDTO.setImage(true);
                     FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" +uploadFileName));
                     Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100,100);
@@ -141,5 +146,23 @@ public class UploadController {
         }
 
         return result;
+    }
+
+    @GetMapping("/download")
+    @ResponseBody
+    public ResponseEntity<Resource> downloadFile(String fileName) throws IOException {
+        log.info("Download file : " + fileName);
+
+        Resource resource = new FileSystemResource("/tmp/upload_ajax/" + fileName);
+
+        log.info("resource : " + resource);
+        log.info("check shit out : " + resource.getFilename().indexOf("_"));
+        String resourceName = resource.getFilename().substring(resource.getFilename().indexOf("_") + 1);
+        log.info("resource name : " + resourceName);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", Files.probeContentType(resource.getFile().toPath()));
+        headers.add("Content-Disposition", "attachment; filename=" + new String(resourceName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
+
+        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 }
