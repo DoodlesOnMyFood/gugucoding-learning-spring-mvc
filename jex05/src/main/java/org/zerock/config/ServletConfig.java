@@ -14,10 +14,10 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @EnableWebMvc
 public class ServletConfig implements WebMvcConfigurer {
-    @Bean
-    public MultipartResolver multipartResolver(){
-        return new StandardServletMultipartResolver();
-    }
+//    @Bean
+//    public MultipartResolver multipartResolver(){
+//        return new StandardServletMultipartResolver();
+//    }
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {

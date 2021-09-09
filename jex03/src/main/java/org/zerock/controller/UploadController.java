@@ -2,7 +2,6 @@ package org.zerock.controller;
 
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -12,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.domain.AttachFileDTO;
 
@@ -24,17 +26,14 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 @Log4j
 public class UploadController {
-
-    private ApplicationContext context;
-
-    public UploadController(ApplicationContext context) {
-        this.context = context;
-    }
 
     private String getFolder(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -129,6 +128,7 @@ public class UploadController {
                 log.error(e.getMessage());
             }
         }
+
         return new ResponseEntity<List<AttachFileDTO>>(list, HttpStatus.OK);
     }
 

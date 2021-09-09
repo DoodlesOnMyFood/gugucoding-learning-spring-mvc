@@ -4,6 +4,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
 
 public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -25,6 +26,8 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
+        MultipartConfigElement multipartConfigElement = new MultipartConfigElement("/tmp/spring", 2071520, 41943040, 2071520);
+        registration.setMultipartConfig(multipartConfigElement);
     }
 
     @Override
